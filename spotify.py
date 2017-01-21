@@ -13,23 +13,20 @@ SPOTIPY_CLIENT_SECRET = keys['SpotifySecret']
 client_credentials_manager = SpotifyClientCredentials(SPOTIPY_CLIENT_ID,SPOTIPY_CLIENT_SECRET)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
+emotions = {'neutral' : ['neutral', 'popular', 'hits', 'dance', 'hot'],
+            'happiness' : ['happiness', 'happy', 'cheerful', 'summer', 'upbeat'],
+            'anger' : ['angry', 'anger', 'rage', 'upset'],
+            'sadness' : ['sad', 'sadness', 'emo', 'winter'],
+            'fear' : ['calm', 'calming', 'relax']}
+
 neutral_cats = ['neutral', 'popular', 'hits', 'dance', 'hot']
 happy_cats = ['happiness', 'happy', 'cheerful', 'summer', 'upbeat']
 angry_cats = ['angry', 'anger', 'rage', 'upset']
-sad_cats = ['sad', 'sadness', 'emo']
+sad_cats = ['sad', 'sadness', 'emo', 'winter']
 fear_cats = ['calm', 'calming', 'relax']
 
 def get_playlist(emotion):
-    if emotion == 'neutral':
-        keyword = random.choice(neutral_cats)
-    elif emotion == 'happiness':
-        keyword = random.choice(happy_cats)
-    elif emotion == 'sadness':
-        keyword = random.choice(sad_cats)
-    elif emotion == 'anger':
-        keyword = random.choice(angry_cats)
-    else:
-        keyword = random.choice(fear_cats)
+    keyword = emotions[emotion]
     random_int = random.randint(0, 75)
     playlist_list = sp.search(keyword, limit=10, offset=random_int, type='playlist', market='SG')['playlists']['items']
     

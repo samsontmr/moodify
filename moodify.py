@@ -25,7 +25,7 @@ import emotion_api
 
 #Variables
 KEYS = dict([line.split() for line in open('KEYS')])
-WELCOME_MESSAGE = 'Welcome to Moodify! Send a selfie to begin'
+WELCOME_MESSAGE = 'Welcome to Moodify!\nSend a selfie to begin'
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -42,8 +42,10 @@ def start(bot, update):
 
 
 def help(bot, update):
-    update.message.reply_text('Help!')
+    update.message.reply_text('Send a selfie to begin!')
 
+def is_image(url):
+    return url.endswith('.jpg') or url.endswith('.jpeg') or url.endswith('.png') or url.endswith('.gif') 
 
 def get_input(bot, update):
     if update.message.photo:
@@ -76,18 +78,22 @@ def get_input(bot, update):
             # Load the original image, fetched from the URL
             logger.info('Result found: ' + str(result))
             scores = result[0]['scores']
-            new_scores = {key: val for key, val in scores.items() if key in ['happiness', 'anger', 'sadness', 'neutral', 'fear']}
+            new_scores = {key: val for key, val in scores.items() 
+                          if key in ['happiness', 'anger', 'sadness', 'neutral', 'fear']}
             logger.info('Filtered emotions: ' + str(new_scores))
             new_scores = {k: float(v) for k, v in new_scores.items()}
-            sorted_scores = [key for (key, value) in sorted(new_scores.items(), key=lambda em:em[1], reverse=True)]
+            sorted_scores = [key for (key, value) in sorted(new_scores.items(), 
+                                                            key=lambda em:em[1], reverse=True)]
             highest_score = sorted_scores[0]
             
             logger.info(sorted_scores)
-            update.message.reply_text('Here\'s your playlist!\n' + spotify.get_playlist(highest_score))
-
+            update.message.reply_text('Enjoy your playlist!\n' + spotify.get_playlist(highest_score))
+        else:
+           update.message.reply_text("Face not found.\nPlease send a photo with a face") 
         logger.info("Photo received from %s" % user.first_name)
-    if update.message.text:
-        update.message.reply_text(update.message.text)
+
+    elif not is_image(update.message.text):
+        update.message.reply_text("Please send a photo with a face")
 
 
 def error(bot, update, error):
