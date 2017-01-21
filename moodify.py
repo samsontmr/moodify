@@ -18,27 +18,11 @@ bot.
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
-
-import time
 import requests
-import cv2
-import operator
-import numpy as np
 
-
-# Import library to display results
-import matplotlib.pyplot as plt
+from emotion import *
 
 keys = dict([line.split() for line in open('keys')])
-
-
-# Display images within Jupyter
-# Variables
-
-_url = 'https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize'
-_key = key['EmotionAPI'] #Here you have to paste your primary key
-_maxNumRetries = 10
-
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -61,9 +45,47 @@ def help(bot, update):
 
 def get_input(bot, update):
     if update.message.photo:
+        photo_id = update.message.photo[-1].file_id
+        json_url = ('https://api.telegram.org/bot' + keys['BotKey'] + 
+                    '/getFile?file_id=' + photo_id)
+        logger.info(update.message.photo[-1].file_size)
+        
+        logger.info(requests.get(json_url).json())
+
+        file_path = (requests.get(json_url).json())['result']['file_path']
+        photo_url = 'https://api.telegram.org/file/bot' + keys['BotKey'] + "/" + file_path
+        logger.info(photo_url)
+
         photo_file = bot.getFile(update.message.photo[-1].file_id)
         photo_file.download('user_photo.jpg')
         user = update.message.from_user
+        
+        headers = dict()
+        headers['Ocp-Apim-Subscription-Key'] = keys['EmotionAPI']
+        headers['Content-Type'] = 'application/json' 
+
+        json = { "url": photo_url }
+        data = None
+        params = None
+        
+        result = processRequest( json, data, headers, params )
+        
+        if result is not None:
+            # Load the original image, fetched from the URL
+            logger.info(result)
+            scores = result[0]['scores']
+            new_scores = {key: val for key, val in scores.items() if key in ['happiness', 'anger', 'sadness', 'neutral', 'fear']}
+            logger.info('Filtered emotions: ' + str(new_scores))
+            new_scores = {k: float(v) for k, v in new_scores.items()}
+            sorted_scores = [key for (key, value) in sorted(new_scores.items(), key=lambda em:em[1], reverse=True)]
+            highest_score = sorted_scores[0]
+            
+            logger.info(sorted_scores)
+            update.message.reply_text(highest_score)
+            
+            logger.info("Result found")
+            
+
         logger.info("Photo received from %s" % user.first_name)
         update.message.reply_text("Photo received!")
     if update.message.text:
@@ -76,7 +98,7 @@ def error(bot, update, error):
 
 def main():
     # Create the EventHandler and pass it your bot's token.
-    updater = Updater(key['BotKey'])
+    updater = Updater(keys['BotKey'])
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
