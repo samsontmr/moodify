@@ -13,14 +13,25 @@ SPOTIPY_CLIENT_SECRET = keys['SpotifySecret']
 client_credentials_manager = SpotifyClientCredentials(SPOTIPY_CLIENT_ID,SPOTIPY_CLIENT_SECRET)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-#genres = sp.recommendation_genre_seeds()
-#features = sp.audio_features(tracks=['http://open.spotify.com/track/6rqhFgbbKwnb9MLmUQDhG6'])
+neutral_cats = ['neutral', 'popular', 'hits', 'dance', 'hot']
+happy_cats = ['happiness', 'happy', 'cheerful', 'summer', 'upbeat']
+angry_cats = ['angry', 'anger', 'rage', 'upset']
+sad_cats = ['sad', 'sadness', 'emo']
+fear_cats = ['calm', 'calming', 'relax']
 
 def get_playlist(emotion):
     if emotion == 'neutral':
-        emotion = 'popular'
+        keyword = random.choice(neutral_cats)
+    elif emotion == 'happiness':
+        keyword = random.choice(happy_cats)
+    elif emotion == 'sadness':
+        keyword = random.choice(sad_cats)
+    elif emotion == 'anger':
+        keyword = random.choice(angry_cats)
+    else:
+        keyword = random.choice(neutral_cats)
     random_int = random.randint(0, 75)
-    playlist_list = sp.search(emotion, limit=10, offset=random_int, type='playlist', market=None)['playlists']['items']
+    playlist_list = sp.search(keyword, limit=10, offset=random_int, type='playlist', market='SG')['playlists']['items']
     
     for pl in playlist_list:
         if pl['public'] is None or pl['public'] == True:
