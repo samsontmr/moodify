@@ -19,8 +19,9 @@ bot.
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 import requests
+import spotify
 
-from emotion import *
+import emotion_api
 
 keys = dict([line.split() for line in open('keys')])
 
@@ -68,11 +69,11 @@ def get_input(bot, update):
         data = None
         params = None
         
-        result = processRequest( json, data, headers, params )
+        result = emotion_api.processRequest(json, data, headers, params)
         
         if result is not None:
             # Load the original image, fetched from the URL
-            logger.info(result)
+            logger.info('Result found: ' + str(result))
             scores = result[0]['scores']
             new_scores = {key: val for key, val in scores.items() if key in ['happiness', 'anger', 'sadness', 'neutral', 'fear']}
             logger.info('Filtered emotions: ' + str(new_scores))
@@ -81,13 +82,9 @@ def get_input(bot, update):
             highest_score = sorted_scores[0]
             
             logger.info(sorted_scores)
-            update.message.reply_text(highest_score)
-            
-            logger.info("Result found")
-            
+            update.message.reply_text('Here\'s your playlist!\n' + spotify.get_playlist(highest_score))
 
         logger.info("Photo received from %s" % user.first_name)
-        update.message.reply_text("Photo received!")
     if update.message.text:
         update.message.reply_text(update.message.text)
 
