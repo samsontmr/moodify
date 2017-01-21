@@ -17,6 +17,8 @@ sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 #features = sp.audio_features(tracks=['http://open.spotify.com/track/6rqhFgbbKwnb9MLmUQDhG6'])
 
 def get_playlist(emotion):
+    if emotion == 'neutral':
+        emotion = 'popular'
     random_int = random.randint(0, 75)
     playlist_list = sp.search(emotion, limit=10, offset=random_int, type='playlist', market=None)['playlists']['items']
     

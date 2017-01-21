@@ -23,7 +23,9 @@ import spotify
 
 import emotion_api
 
-keys = dict([line.split() for line in open('keys')])
+#Variables
+KEYS = dict([line.split() for line in open('KEYS')])
+WELCOME_MESSAGE = 'Welcome to Moodify! Send a selfie to begin'
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -31,13 +33,12 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-
 # Define a few command handlers. These usually take the two arguments bot and
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(bot, update):
     logger.info("Bot Started")
-    logger.info("Keys: %s" % keys)
-    update.message.reply_text('Hi!')
+    logger.info("Keys: %s" % KEYS)
+    update.message.reply_text(WELCOME_MESSAGE)
 
 
 def help(bot, update):
@@ -47,14 +48,14 @@ def help(bot, update):
 def get_input(bot, update):
     if update.message.photo:
         photo_id = update.message.photo[-1].file_id
-        json_url = ('https://api.telegram.org/bot' + keys['BotKey'] + 
+        json_url = ('https://api.telegram.org/bot' + KEYS['BotKey'] + 
                     '/getFile?file_id=' + photo_id)
         logger.info(update.message.photo[-1].file_size)
         
         logger.info(requests.get(json_url).json())
 
         file_path = (requests.get(json_url).json())['result']['file_path']
-        photo_url = 'https://api.telegram.org/file/bot' + keys['BotKey'] + "/" + file_path
+        photo_url = 'https://api.telegram.org/file/bot' + KEYS['BotKey'] + "/" + file_path
         logger.info(photo_url)
 
         photo_file = bot.getFile(update.message.photo[-1].file_id)
@@ -62,7 +63,7 @@ def get_input(bot, update):
         user = update.message.from_user
         
         headers = dict()
-        headers['Ocp-Apim-Subscription-Key'] = keys['EmotionAPI']
+        headers['Ocp-Apim-Subscription-Key'] = KEYS['EmotionAPI']
         headers['Content-Type'] = 'application/json' 
 
         json = { "url": photo_url }
@@ -95,7 +96,7 @@ def error(bot, update, error):
 
 def main():
     # Create the EventHandler and pass it your bot's token.
-    updater = Updater(keys['BotKey'])
+    updater = Updater(KEYS['BotKey'])
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
