@@ -29,7 +29,7 @@ def get_playlist(emotion):
     elif emotion == 'anger':
         keyword = random.choice(angry_cats)
     else:
-        keyword = random.choice(neutral_cats)
+        keyword = random.choice(fear_cats)
     random_int = random.randint(0, 75)
     playlist_list = sp.search(keyword, limit=10, offset=random_int, type='playlist', market='SG')['playlists']['items']
     
