@@ -19,14 +19,8 @@ emotions = {'neutral' : ['neutral', 'popular', 'hits', 'dance', 'hot'],
             'sadness' : ['sad', 'sadness', 'emo', 'winter'],
             'fear' : ['calm', 'calming', 'relax']}
 
-neutral_cats = ['neutral', 'popular', 'hits', 'dance', 'hot']
-happy_cats = ['happiness', 'happy', 'cheerful', 'summer', 'upbeat']
-angry_cats = ['angry', 'anger', 'rage', 'upset']
-sad_cats = ['sad', 'sadness', 'emo', 'winter']
-fear_cats = ['calm', 'calming', 'relax']
-
 def get_playlist(emotion):
-    keyword = emotions[emotion]
+    keyword = random.choice(emotions[emotion])
     random_int = random.randint(0, 75)
     playlist_list = sp.search(keyword, limit=10, offset=random_int, type='playlist', market='SG')['playlists']['items']
     
