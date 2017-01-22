@@ -20,3 +20,5 @@ We leveraged the power of Microsoft Cognitive Services to detect a person's mood
 
 ## What's next for moodify
 Generating custom playlists using machine learning
+
+### Welcoming Pull Requests
