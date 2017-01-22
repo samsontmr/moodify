@@ -29,7 +29,7 @@ WELCOME_MESSAGE = 'Welcome to Moodify!\nSend a selfie to begin'
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
+                    level=logging.WARN)
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +50,7 @@ def is_image(url):
 def get_input(bot, update):
     user = update.message.from_user
     if update.message.photo:
+        update.message.reply_text("Thinking hard...")
         logger.info("Photo received from %s" % user.first_name)
         photo_id = update.message.photo[-1].file_id
         json_url = ('https://api.telegram.org/bot' + KEYS['BotKey'] + 
