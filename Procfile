@@ -1,1 +1,1 @@
-bot:  python moodify.py
+web: python moodify.py

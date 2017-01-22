@@ -11,15 +11,14 @@ Send our Telegram bot [@moodifybot](telegram.me/moodifybot) a selfie and it will
 ## How we built it
 moodify was built during a HacknRoll 2017. We leveraged the power of Microsoft Cognitive Services to detect a person's mood from their facial expression, used that information to choose a Spotify playlist, and packaged it up into an easy-to-use Telegram bot.
 
-* APIs
+* APIs, Services
   * Microsoft Emotion API
   * Telegram Bot API with [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
   * Spotify WebAPI
+  * Heroku
 
 ## What's next for moodify
 Generating custom playlists using machine learning
 
 ## We Welcome Pull Requests
-* moodify is currently hosted on my laptop and will not be running 24/7. I am currently trying to get it to run on heroku, openshift, or any free hosting service but have been unsuccessful so far. Pull Requests are very welcome for this issue!
 * moodify uses API tokens to communicate with the different servers, and I unfortunately am unable to share them here. However, these services are free for limited use.
-
