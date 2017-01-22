@@ -1,10 +1,10 @@
 import time
 import requests
-import cv2
-import operator
-import numpy as np
+import logging
 
-import matplotlib.pyplot as plt
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.WARN)
+logger = logging.getLogger(__name__)
 
 keys = dict([line.split() for line in open('keys')])
 
@@ -32,14 +32,14 @@ def processRequest( json, data, headers, params ):
 
         if response.status_code == 429: 
 
-            print( "Message: %s" % ( response.json()['error']['message'] ) )
+            logger.warn( "Message: %s" % ( response.json()['error']['message'] ) )
 
             if retries <= _maxNumRetries: 
                 time.sleep(1) 
                 retries += 1
                 continue
             else: 
-                print( 'Error: failed after retrying!' )
+                logger.warn( 'Error: failed after retrying!' )
                 break
 
         elif response.status_code == 200 or response.status_code == 201:
@@ -52,8 +52,8 @@ def processRequest( json, data, headers, params ):
                 elif 'image' in response.headers['content-type'].lower(): 
                     result = response.content
         else:
-            print( "Error code: %d" % ( response.status_code ) )
-            print( "Message: %s" % ( response.json()['error']['message'] ) )
+            logger.warn( "Error code: %d" % ( response.status_code ) )
+            logger.warn( "Message: %s" % ( response.json()['error']['message'] ) )
 
         break
         

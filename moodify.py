@@ -48,7 +48,9 @@ def is_image(url):
     return url.endswith('.jpg') or url.endswith('.jpeg') or url.endswith('.png') or url.endswith('.gif') 
 
 def get_input(bot, update):
+    user = update.message.from_user
     if update.message.photo:
+        logger.info("Photo received from %s" % user.first_name)
         photo_id = update.message.photo[-1].file_id
         json_url = ('https://api.telegram.org/bot' + KEYS['BotKey'] + 
                     '/getFile?file_id=' + photo_id)
@@ -59,10 +61,6 @@ def get_input(bot, update):
         file_path = (requests.get(json_url).json())['result']['file_path']
         photo_url = 'https://api.telegram.org/file/bot' + KEYS['BotKey'] + "/" + file_path
         logger.info(photo_url)
-
-        photo_file = bot.getFile(update.message.photo[-1].file_id)
-        photo_file.download('user_photo.jpg')
-        user = update.message.from_user
         
         headers = dict()
         headers['Ocp-Apim-Subscription-Key'] = KEYS['EmotionAPI']
@@ -74,7 +72,7 @@ def get_input(bot, update):
         
         result = emotion_api.processRequest(json, data, headers, params)
         
-        if result is not None:
+        if result is not None and result != []:
             # Load the original image, fetched from the URL
             logger.info('Result found: ' + str(result))
             scores = result[0]['scores']
@@ -90,7 +88,6 @@ def get_input(bot, update):
             update.message.reply_text('Enjoy your playlist!\n' + spotify.get_playlist(highest_score))
         else:
            update.message.reply_text("Face not found.\nPlease send a photo with a face") 
-        logger.info("Photo received from %s" % user.first_name)
 
     elif not is_image(update.message.text):
         update.message.reply_text("Please send a photo with a face")
