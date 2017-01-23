@@ -26,7 +26,7 @@ import emotion_api
 
 #Variables
 KEYS = dict([line.split() for line in open('keys')])
-WELCOME_MESSAGE = 'Welcome to Moodify!\nSend a selfie to begin'
+WELCOME_MESSAGE = 'Welcome to moodify!\nSend a selfie to begin'
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
