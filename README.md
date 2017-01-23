@@ -1,4 +1,6 @@
-# moodify
+# moodify, a telegram bot
+
+![photo_2017-01-23_16-58-19](https://cloud.githubusercontent.com/assets/15007950/22197508/3ef75cc0-e18d-11e6-9752-fe481d10dbb2.jpg)
 
 ## Inspiration
 We often find it difficult to express our feelings in words. However, the human face does this effortlessly. We want to use the power of deep learning to read these emotions and recommend the perfect playlist for your mood.
