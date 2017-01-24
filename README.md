@@ -18,7 +18,7 @@ moodify was built during a HacknRoll 2017. We tapped on the power of Microsoft C
 * APIs, Services
   * Microsoft Emotion API
   * Telegram Bot API with [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
-  * Spotify WebAPI
+  * Spotify Web API
   * Heroku
 
 ## What's next for moodify
