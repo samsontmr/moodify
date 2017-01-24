@@ -25,4 +25,4 @@ moodify was built during a HacknRoll 2017. We tapped on the power of Microsoft C
 Generating custom playlists using machine learning
 
 ## We Welcome Pull Requests
-* moodify uses API tokens to communicate with the different servers, and I unfortunately am unable to share them here. However, these services are free for limited use.
+* moodify uses API tokens to communicate with the different servers, and I am unfortunately unable to share them here. However, these services are free for limited use, so feel free to get your own API keys!
