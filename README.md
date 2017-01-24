@@ -13,7 +13,7 @@ moodify, powered by emotion.
 Send our Telegram bot [@moodifybot](telegram.me/moodifybot) a selfie and it will recommend a playlist to suit your mood!
 
 ## How we built it
-moodify was built during a HacknRoll 2017. We leveraged the power of Microsoft Cognitive Services to detect a person's mood from their facial expression, used that information to choose a Spotify playlist, and packaged it up into an easy-to-use Telegram bot.
+moodify was built during a HacknRoll 2017. We tapped on the power of Microsoft Cognitive Services to detect a person's mood from their facial expression, used that information to choose a Spotify playlist, and packaged it up into an easy-to-use Telegram bot.
 
 * APIs, Services
   * Microsoft Emotion API
